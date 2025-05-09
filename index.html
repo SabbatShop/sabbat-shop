@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sabbat Shop ♡</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <header data-aos="fade-down">
+    <img src="imagens/logo.jpg" alt="Logo Sabbat Shop" class="logo" data-aos="flip-left" />
+    <h1>Sabbat Shop</h1>
+    <p><strong>A melhor lojinha de Avakin Life</strong></p>
+    <p><strong>Com suporte 24hrs!</strong></p>
+    <nav class="menu-topo" aria-label="Menu principal">
+      <a href="#sobre" class="botao-menu">Sobre nossa lojinha</a>
+      <a href="#contato" class="botao-menu">Fale conosco</a>
+    </nav>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main>
+    <h2 style="text-align: center;">Nossos Produtos</h2>
+
+    <!-- Produto Avacoins -->
+    <section class="produto" data-aos="zoom-in">
+      <img src="imagens/conta1.png" alt="Conta com Avacoins" class="imagem-conta" loading="lazy" />
+      <h3>Conta fake com Avacoins</h3>
+      <label for="select-avacoins">Escolha a quantidade:</label>
+      <select id="select-avacoins" class="select-compra">
+        <option value="">Selecione...</option>
+        <option value="Conta 20k|5.50">20k - R$ 5,50</option>
+        <option value="Conta 25k|6.65">25k - R$ 6,65</option>
+        <option value="Conta 30k|7.75">30k - R$ 7,75</option>
+        <option value="Conta 35k|9.50">35k - R$ 9,50</option>
+      </select>
+      <button class="botao" onclick="adicionarAoCarrinhoSelect('avacoins')">Adicionar ao Carrinho</button>
+    </section>
+
+    <!-- Produto Crowns -->
+    <section class="produto" data-aos="zoom-in">
+      <img src="imagens/conta2.png" alt="Conta com Crowns" class="imagem-conta" loading="lazy" />
+      <h3>Conta com Crowns</h3>
+      <label for="select-crowns">Escolha a quantidade:</label>
+      <select id="select-crowns" class="select-compra">
+        <option value="">Selecione...</option>
+        <option value="5 crowns|2.25">5 crowns - R$ 2,25</option>
+        <option value="10 crowns|2.75">10 crowns - R$ 2,75</option>
+        <option value="20 crowns|3.80">20 crowns - R$ 3,80</option>
+        <option value="30 crowns|4.80">30 crowns - R$ 4,80</option>
+        <option value="40 crowns|6.20">40 crowns - R$ 6,20</option>
+        <option value="50 crowns|7.25">50 crowns - R$ 7,25</option>
+        <option value="60 crowns|8.30">60 crowns - R$ 8,30</option>
+        <option value="70 crowns|9.45">70 crowns - R$ 9,45</option>
+        <option value="80 crowns|10.50">80 crowns - R$ 10,50</option>
+        <option value="90 crowns|11.75">90 crowns - R$ 11,75</option>
+        <option value="100 crowns|12.35">100 crowns - R$ 12,35</option>
+        <option value="150 crowns|17.75">150 crowns - R$ 17,75</option>
+        <option value="200 crowns|21.60">200 crowns - R$ 21,60</option>
+      </select>
+      <button class="botao" onclick="adicionarAoCarrinhoSelect('crowns')">Adicionar ao Carrinho</button>
+    </section>
+
+    <!-- Carrinho -->
+    <section class="carrinho" data-aos="fade-up">
+      <h3>Seu Carrinho</h3>
+      <ul id="lista-carrinho"></ul>
+      <p id="total-carrinho">Total: R$ 0,00</p>
+      <button class="botao-limpar" onclick="limparCarrinho()">Limpar Carrinho</button>
+      <a href="https://wa.me/5586999564794?text=" id="whatsapp-link" class="botao-whatsapp" target="_blank">Confirmar Compra pelo WhatsApp</a>
+    </section>
+
+    <!-- Sobre e Contato -->
+    <section id="sobre" class="secao-informativa">
+      <h3>Sobre a Loja</h3>
+      <p>A Sabbat Shop é especializada na venda de contas fakes e itens do Avakin Life. Trabalhamos com segurança, qualidade e transparência. Todas as contas são testadas e entregues prontas para uso ♡</p>
+    </section>
+
+    <section id="contato" class="secao-informativa">
+      <h3>Contato</h3>
+      <p>Fale conosco pelo WhatsApp clicando no botão de compra ou entre em contato pelo Instagram: <a href="https://www.instagram.com/sabbat.shopp/" target="_blank">@sabbat.shopp</a></p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Sabbat Shop - Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: window.innerWidth < 600 ? 600 : 1000, once: true });
+
+    const carrinho = [];
+
+    function adicionarAoCarrinhoSelect(tipo) {
+      const select = document.getElementById(`select-${tipo}`);
+      const valor = select.value;
+      if (!valor) return alert(`Selecione uma opção de ${tipo}.`);
+
+      const [nome, precoStr] = valor.split('|');
+      const preco = parseFloat(precoStr);
+      const existente = carrinho.find(i => i.nome === nome);
+
+      if (existente) {
+        existente.qtd += 1;
+      } else {
+        carrinho.push({ nome, preco, qtd: 1 });
+      }
+
+      atualizarCarrinho();
+    }
+
+    function atualizarCarrinho() {
+      const lista = document.getElementById('lista-carrinho');
+      const total = document.getElementById('total-carrinho');
+      lista.innerHTML = '';
+      let soma = 0;
+
+      carrinho.forEach((item, index) => {
+        soma += item.preco * item.qtd;
+        const li = document.createElement('li');
+        li.innerHTML = `${item.nome} (x${item.qtd}) <button onclick="removerItem(${index})">Remover</button>`;
+        lista.appendChild(li);
+      });
+
+      total.textContent = `Total: R$ ${soma.toFixed(2).replace('.', ',')}`;
+
+      const whatsappLink = document.getElementById('whatsapp-link');
+      let mensagem = `Oii fiz uma listinha de compras no site ♡:\n`;
+      carrinho.forEach(item => {
+        mensagem += `${item.nome} (x${item.qtd}) - R$ ${(item.preco * item.qtd).toFixed(2)}\n`;
+      });
+      mensagem += `Total: R$ ${soma.toFixed(2)}`;
+      whatsappLink.href = `https://wa.me/5586999564794?text=${encodeURIComponent(mensagem)}`;
+    }
+
+    function removerItem(index) {
+      carrinho.splice(index, 1);
+      atualizarCarrinho();
+    }
+
+    function limparCarrinho() {
+      carrinho.length = 0;
+      atualizarCarrinho();
+    }
+  </script>
+</body>
+</html>
